@@ -119,6 +119,13 @@ class AliyunInventory:
         eips[key[:-len('Address')]] = value['IpAddress']  
     
     instance.update(eips)
+
+    vips = dict()
+    for key, value in instance.iteritems():
+      if isinstance(value, dict) and 'PrivateIpAddress' in value and len(value['PrivateIpAddress']) > 0 and key.endswith('VpcAttributes'):
+        vips['vpc'] = value['PrivateIpAddress']['IpAddress'][0]
+    instance.update(vips)
+
     return instance
 
   def ssh_options(self, kind, name, instance):
