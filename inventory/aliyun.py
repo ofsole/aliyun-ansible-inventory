@@ -100,6 +100,17 @@ class AliyunInventory:
         tag = tag.strip()
         if len(tag) > 0:
           index['tag_' + self.to_safe(tag)].append(safe_name)
+      for key, value in ecs.iteritems():
+        if isinstance(value, dict) and 'Tag' in value and len(value['Tag']) > 0 and key.endswith('Tags'):     
+          taglist = value['Tag']
+          for eachdict in taglist:
+            for tagkey, tagvalue in eachdict.items():
+              print tagvalue
+              if 'env' in tagvalue:
+                pass
+              else:
+                index['env'].append(safe_name)
+              
 
       ecs = self.extract_ips(ecs)
       ssh_options = self.ssh_options('ecs', safe_name, ecs)
