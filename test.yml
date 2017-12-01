@@ -1,0 +1,15 @@
+- name: refresh inventory
+  hosts: localhost
+  connection: local
+  gather_facts: False
+  tasks:
+    - name: Refresh aliyun cache
+      command: "{{ inventory_dir }}/aliyun.py --refresh-cache"
+    - name: Refresh in-memory aliyun cache
+      meta: refresh_inventory
+
+- name: Generate hosts file in all ecs instances
+  hosts: infra
+  tasks:
+    - name: Update ecs IPs in hosts file
+      command: ifconfig
