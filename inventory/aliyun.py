@@ -105,11 +105,12 @@ class AliyunInventory:
           taglist = value['Tag']
           for eachdict in taglist:
             for tagkey, tagvalue in eachdict.items():
-              print tagvalue
-              if 'infra' in tagvalue:
-                index['infra'].append(safe_name)
+              if 'service_name' in tagvalue:
+                continue
+              elif 'servicename' in tagvalue:
+                continue
               else:
-                pass
+                index[tagvalue].append(safe_name)
               
 
       ecs = self.extract_ips(ecs)
